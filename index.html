@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ada yang ingin kusampaikan</title>
+<style id="css">
+:root{--bg:#eceeea;--ink:#2f3a38;--soft:#6b7774;--accent-ink:#fff;--line:#d3d8d3;--panel:#f5f6f3;--accent:var(--al);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root,:root[data-accent="mauve"]{--al:#96686f;--ad:#c4979f}
+:root[data-accent="sage"]{--al:#5f7a65;--ad:#9db5a2}
+:root[data-accent="biru"]{--al:#5d7691;--ad:#9bb0c6}
+:root[data-accent="pasir"]{--al:#8a7157;--ad:#c4ad96}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d2423;--ink:#e4e8e4;--soft:#9aa7a3;--accent-ink:#1d2423;--line:#33403e;--panel:#252d2c;--accent:var(--ad)}}
+:root[data-theme="dark"]{--bg:#1d2423;--ink:#e4e8e4;--soft:#9aa7a3;--accent-ink:#1d2423;--line:#33403e;--panel:#252d2c;--accent:var(--ad)}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Newsreader",Georgia,"Times New Roman",serif;font-size:1.2rem;line-height:1.75}
+main{max-width:34rem;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+h1{font-weight:400;font-size:clamp(2rem,8vw,2.9rem);line-height:1.2;margin:0 0 2rem;letter-spacing:-.01em}
+p{margin:0 0 1.4rem}
+.sign{color:var(--soft);font-style:italic;margin-top:2.5rem}
+.heartwrap{text-align:center;margin:3rem 0 1rem}
+#heart{background:none;border:0;padding:.5rem;border-radius:50%;cursor:pointer;line-height:0;animation:beat 3.4s ease-in-out infinite;transition:transform .15s}
+#heart svg{width:9rem;height:9rem;fill:var(--accent)}
+#heart:active{transform:scale(.93)}
+.hint{color:var(--soft);font-size:1rem;margin:.75rem 0 0;font-style:italic}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.ask{margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--line)}
+.ask h2{font-weight:400;font-size:1.7rem;line-height:1.3;margin:0 0 1.75rem}
+.actions{position:relative;display:flex;gap:1rem;flex-wrap:wrap;align-items:center;min-height:4.5rem}
+button{font:inherit;font-size:1.05rem;padding:.7rem 1.6rem;border-radius:999px;cursor:pointer;border:1px solid var(--accent)}
+button:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#yes,.primary{background:var(--accent);color:var(--accent-ink)}
+#no,.quiet{background:transparent;color:var(--soft);border-color:var(--line)}
+#no{transition:transform .35s ease}
+#heart:focus-visible{outline:2px solid var(--accent)}
+#answer{display:none}
+#answer.show{display:block;animation:in 1.2s ease both}
+@keyframes in{from{opacity:0}to{opacity:1}}
+#overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:calc(1.5rem + env(safe-area-inset-top,0px)) 1.5rem calc(1.5rem + env(safe-area-inset-bottom,0px));background:rgba(29,36,35,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:in .5s ease both}
+#overlay[hidden]{display:none}
+#overlay .card{background:var(--bg);border:1px solid var(--line);border-radius:14px;max-width:28rem;width:100%;padding:2.25rem 1.75rem 1.75rem;text-align:center}
+#overlay .card p{font-size:1.6rem;line-height:1.5;margin-bottom:1.75rem}
+.fl{position:fixed;z-index:25;pointer-events:none;color:var(--accent);opacity:0;animation:rise 2.4s ease-out forwards}
+@keyframes rise{0%{opacity:.7;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--dx),-190px)}}
+.adminbtn{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.85rem;padding:.4rem .9rem;margin-bottom:2rem}
+#panel{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:82vh;overflow-y:auto;background:var(--panel);border-top:1px solid var(--line);border-radius:16px 16px 0 0;padding:1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom,0px));font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.95rem;line-height:1.4}
+#panel[hidden]{display:none}
+#panel .in{max-width:34rem;margin:0 auto}
+#panel h3{margin:0 0 .25rem;font-size:1.1rem;font-weight:600}
+#panel .note{color:var(--soft);margin:0 0 1rem;font-size:.85rem}
+#panel label{display:block;margin-bottom:.9rem;color:var(--soft);font-size:.85rem}
+#panel input,#panel textarea,#panel select{display:block;width:100%;margin-top:.25rem;font:inherit;font-size:1rem;padding:.5rem .65rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+#panel textarea{min-height:6.5rem;resize:vertical}
+#panel .row{display:flex;gap:.75rem}
+#panel .row label{flex:1}
+#panel .btns{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+#panel button{font-size:.95rem;padding:.55rem 1.2rem}
+#status{color:var(--soft);font-size:.85rem}
+#adminslot{max-width:34rem;margin:0 auto;padding:1.25rem 1.5rem 0}
+#adminslot:empty{display:none}
+#adminslot .adminbtn{margin-bottom:0}
+#gate,#welcome{min-height:72vh;display:flex;align-items:center;justify-content:center;padding:2rem 1.5rem}
+#gate[hidden],#welcome[hidden],#site[hidden]{display:none}
+.lg{width:100%;max-width:24rem;animation:in .8s ease both}
+.lg h1{font-size:clamp(1.8rem,7vw,2.3rem);margin-bottom:.5rem}
+.lg .sub{color:var(--soft);font-size:1rem;margin-bottom:1.75rem}
+.lg label{display:block;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.9rem;color:var(--soft);margin-bottom:.35rem}
+.lg input{display:block;width:100%;font:inherit;font-size:1.05rem;padding:.7rem .85rem;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+.lg .pw{display:flex;gap:.5rem}
+.lg .pw button{padding:.5rem 1rem;font-size:.9rem;white-space:nowrap}
+.lg .err{min-height:1.5rem;color:var(--accent);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.95rem;margin:.7rem 0 1rem}
+.lg .back{background:none;border:0;padding:0;border-radius:4px;color:var(--soft);font-size:.95rem;margin-bottom:1rem}
+.lg .go{width:100%}
+#welcome .lg{text-align:center}
+#welcome h1{font-size:clamp(2rem,9vw,3rem)}
+button:disabled{opacity:.55;cursor:default}
+#gear{position:fixed;top:0;right:0;z-index:15;background:none;border:0;border-radius:0 0 0 12px;padding:calc(.6rem + env(safe-area-inset-top,0px)) calc(.8rem + env(safe-area-inset-right,0px)) .6rem .8rem;color:var(--soft);line-height:0;opacity:.65}
+#gear:hover,#gear:focus-visible{opacity:1}
+#adm{position:fixed;inset:0;z-index:28;display:flex;align-items:center;justify-content:center;padding:calc(1.5rem + env(safe-area-inset-top,0px)) 1.5rem calc(1.5rem + env(safe-area-inset-bottom,0px));background:rgba(29,36,35,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:in .4s ease both}
+#adm[hidden]{display:none}
+#adm .card{background:var(--bg);border:1px solid var(--line);border-radius:14px;max-width:22rem;width:100%;padding:1.75rem 1.5rem 1.5rem;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
+#adm h3{margin:0 0 .35rem;font-size:1.15rem;font-weight:600}
+#adm .sub{color:var(--soft);font-size:.9rem;margin:0 0 1rem}
+#adm input{display:block;width:100%;font:inherit;font-size:1rem;padding:.6rem .75rem;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink)}
+#adm .err{min-height:1.4rem;color:var(--accent);font-size:.9rem;margin:.6rem 0 .8rem}
+#adm .btns{display:flex;gap:.6rem}
+#adm button{font-size:.95rem;padding:.55rem 1.2rem}
+.emb{text-align:center;line-height:0;margin-bottom:1rem}
+.emb svg{width:2.1rem;height:2.1rem;fill:var(--accent)}
+.dots{display:flex;gap:.4rem;justify-content:center;margin-bottom:1.1rem}
+.dots i{width:.45rem;height:.45rem;border-radius:50%;background:var(--line);transition:background .3s}
+.dots i.on{background:var(--accent)}
+.lg h1,.lg .sub{text-align:center}
+.lg .caps{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.85rem;color:var(--accent);margin:.5rem 0 0}
+.lg .link{background:none;border:0;border-radius:4px;padding:0;margin-top:.7rem;color:var(--soft);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.9rem;text-decoration:underline;text-underline-offset:3px}
+.lg .hintbox{margin:.6rem 0 0;padding:.65rem .85rem;border-left:2px solid var(--accent);background:var(--panel);color:var(--soft);font-size:.95rem;font-style:italic;line-height:1.5;border-radius:0 8px 8px 0}
+.lg .gnote{margin:1.5rem 0 0;text-align:center;color:var(--soft);font-size:.9rem;font-style:italic}
+.orn{display:flex;align-items:center;gap:1rem;color:var(--accent);margin:2.5rem 0;font-size:.9rem}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:var(--line)}
+.rs h2{font-weight:400;font-size:1.5rem;margin:0 0 1.25rem}
+.rs ol{list-style:none;margin:0;padding:0;counter-reset:r}
+.rs li{counter-increment:r;position:relative;padding-left:2.4rem;margin-bottom:1.2rem;opacity:0;transform:translateY(10px);transition:opacity .7s ease,transform .7s ease}
+.rs li.on{opacity:1;transform:none}
+.rs li:before{content:counter(r,decimal-leading-zero);position:absolute;left:0;top:.15rem;color:var(--accent);font-size:.95rem;font-variant-numeric:tabular-nums}
+.count{text-align:center;color:var(--soft);font-style:italic;font-size:1.05rem;margin:2.5rem 0 0}
+.count b{color:var(--accent);font-weight:400;font-size:1.9rem;font-style:normal;padding:0 .2rem}
+.foot{text-align:center;color:var(--soft);font-size:.95rem;font-style:italic;margin:3.5rem 0 0}
+.music{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:2.5rem 0 0;padding:1.1rem 1.25rem;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.music[hidden]{display:none}
+.mic{width:2.6rem;height:2.6rem;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:var(--accent-ink);font-size:1.2rem;flex:none}
+.mtx{flex:1;min-width:9rem}
+.mtx p{margin:0}
+.mt{font-size:1.2rem;line-height:1.3}
+.ma{color:var(--soft);font-size:1rem}
+.mtx .mn{color:var(--soft);font-size:.9rem;font-style:italic;margin-top:.3rem}
+.mbtn{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:.9rem;padding:.5rem 1.1rem;border-radius:999px;border:1px solid var(--accent);color:var(--accent);text-decoration:none;white-space:nowrap}
+.mbtn[hidden]{display:none}
+.mbtn:hover,.mbtn:focus-visible{background:var(--accent);color:var(--accent-ink)}
+.mplay[hidden]{display:none}
+.mbar{flex-basis:100%;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.mbar[hidden]{display:none}
+.mbar i{display:block;height:100%;width:0;background:var(--accent)}
+#mbtn{position:fixed;top:calc(.5rem + env(safe-area-inset-top,0px));left:calc(.75rem + env(safe-area-inset-left,0px));z-index:15;width:2.75rem;height:2.75rem;padding:0;border-radius:50%;background:var(--bg);border:1px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer}
+#mbtn[hidden]{display:none}
+#mbtn svg{width:1.3rem;height:1.3rem;display:block}
+#mbtn.on{background:var(--accent);color:var(--accent-ink);animation:beat 2.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){#mbtn.on{animation:none}.rs li{opacity:1;transform:none;transition:none}#heart,#answer.show,#overlay,.lg,#adm{animation:none}#no{transition:none}.fl{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script id="cfg" type="application/json">{"untuk":"Kamu","dari":"Aku","judul":"Hai, {untuk}. Ada yang ingin kusampaikan.","surat":"Sudah lama aku menyusun kata-kata ini, dan akhirnya kuputuskan untuk menuliskannya saja, pelan-pelan, apa adanya.\n\nAku suka caramu mendengarkan. Aku suka hari-hari biasa yang jadi terasa tenang saat ada kamu di dalamnya. Tidak perlu yang megah. Duduk berdampingan sambil bercerita tentang apa saja sudah cukup.\n\nLama-lama aku sadar, perasaan ini bukan sekadar nyaman. Aku sayang sama kamu, dan aku ingin jujur tentang itu.","hint":"Tekan hatinya","pesanHati":"Aku sayang kamu, {untuk}. Terima kasih sudah hadir di hari-hariku.","tanya":"Maukah kamu menjadi bagian dari hari-hariku, sebagai pasanganku?","ya":"Iya, mau","tidak":"Belum yakin","jawabJudul":"Terima kasih, {untuk}.","jawab":"Aku tidak akan terburu-buru. Kita jalani bersama, satu hari sekali, dengan sabar dan dengan senyum.","warna":"mauve","user":"username","passHash":"023c80580248c4d9c21b20f8e3956755713604022856775c8fe3cc0e2455ab96","welcomeJudul":"Selamat datang, user.","welcomeSub":"Ada yang menunggumu di dalam.","adminHash":"f5c39011b58794925d11e2659cb73cec250677c51e6466d5868a3484bb0d9e60","alasanJudul":"Beberapa alasannya","alasan":"Caramu tertawa membuat hari biasa terasa ringan.\nKamu selalu mau mendengarkan sampai selesai.\nBersamamu, diam pun terasa nyaman.\nKamu membuatku ingin jadi versi diriku yang lebih baik.","tanggal":"2025-07-03","tanggalLabel":"sejak kita pertama bertemu","petunjuk":"Sesuatu yang hanya kita berdua yang tahu.","loginCatatan":"Halaman ini dibuat khusus untukmu.","penutup":"Dibuat dengan sepenuh hati oleh {dari}.","musikUrl":"https://www.youtube.com/results?search_query=Penjaga+Hati+Nadhif+Basalamah","musikAsset":"80648746d00b017f973f02a9e8281aa1","musikJudul":"Penjaga Hati","musikArtis":"Nadhif Basalamah","musikCatatan":"Lagu ini untuk menemani saat kamu membaca."}</script>
+<script id="code">
+(function(){
+var DEF={
+ untuk:"Kamu",dari:"Aku",
+ judul:"Hai, {untuk}. Ada yang ingin kusampaikan.",
+ surat:"Sudah lama aku menyusun kata-kata ini, dan akhirnya kuputuskan untuk menuliskannya saja, pelan-pelan, apa adanya.\n\nAku suka caramu mendengarkan. Aku suka hari-hari biasa yang jadi terasa tenang saat ada kamu di dalamnya. Tidak perlu yang megah. Duduk berdampingan sambil bercerita tentang apa saja sudah cukup.\n\nLama-lama aku sadar, perasaan ini bukan sekadar nyaman. Aku sayang sama kamu, dan aku ingin jujur tentang itu.",
+ hint:"Tekan hatinya",
+ pesanHati:"Aku sayang kamu, {untuk}. Terima kasih sudah hadir di hari-hariku.",
+ tanya:"Maukah kamu menjadi bagian dari hari-hariku, sebagai pasanganku?",
+ ya:"Iya, mau",tidak:"Belum yakin",
+ jawabJudul:"Terima kasih, {untuk}.",
+ jawab:"Aku tidak akan terburu-buru. Kita jalani bersama, satu hari sekali, dengan sabar dan dengan senyum.",
+ warna:"mauve",
+ user:"sayang",passHash:"a445164b61810f8d492aad7ca4f714b8d114dbb59dcbcfcce16f3f27eea5b993",
+ welcomeJudul:"Selamat datang, {untuk}.",welcomeSub:"Ada yang menunggumu di dalam.",
+ adminHash:"f5c39011b58794925d11e2659cb73cec250677c51e6466d5868a3484bb0d9e60",
+ alasanJudul:"Beberapa alasannya",
+ alasan:"Caramu tertawa membuat hari biasa terasa ringan.\nKamu selalu mau mendengarkan sampai selesai.\nBersamamu, diam pun terasa nyaman.\nKamu membuatku ingin jadi versi diriku yang lebih baik.",
+ tanggal:"",tanggalLabel:"sejak kita pertama bertemu",
+ petunjuk:"Sesuatu yang hanya kita berdua yang tahu.",
+ loginCatatan:"Halaman ini dibuat khusus untukmu.",
+ penutup:"Dibuat dengan sepenuh hati oleh {dari}.",
+ 
+ 
+ musikUrl:"https://www.youtube.com/results?search_query=Penjaga+Hati+Nadhif+Basalamah",
+ musikAsset:"",
+ musikFile:""
+};
+var saved={};try{saved=JSON.parse(document.getElementById("cfg").textContent||"{}")}catch(e){}
+var cfg=Object.assign({},DEF,saved);
+var HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+var app=document.getElementById("app");
+var GATE='<div class="lg"><div class="emb">'+HEART+'</div><div class="dots" aria-hidden="true"><i class="on"></i><i id="d2"></i></div><h1>Masuk</h1><p class="sub" id="gs"></p><form id="gform" novalidate>'+
+ '<div id="s1"><label for="gu">Username</label><input id="gu" name="username" autocomplete="username" autocapitalize="none" spellcheck="false"></div>'+
+ '<div id="s2" hidden><button type="button" class="back" id="gback"></button><label for="gp">Password</label><div class="pw"><input id="gp" name="password" type="password" autocomplete="current-password"><button type="button" class="quiet" id="gshow">Lihat</button></div><p class="caps" id="gcaps" hidden>Caps Lock sedang aktif.</p><button type="button" class="link" id="ghint">Butuh petunjuk?</button><p class="hintbox" id="ghb" hidden></p></div>'+
+ '<p class="err" id="gerr" role="alert"></p><button class="primary go" id="gnext" type="submit">Continue</button></form><p class="gnote" id="gnote"></p></div>';
+var NOTE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+app.innerHTML='<button type="button" id="mbtn" hidden aria-label="Putar lagu" aria-pressed="false">'+NOTE+'</button><audio id="aud" preload="none" loop></audio><div id="adminslot"></div><div id="gate" hidden>'+GATE+'</div>'+
+ '<div id="welcome" hidden><div class="lg"><div class="emb">'+HEART+'</div><h1 id="wt"></h1><p class="sub" id="ws"></p><button id="wgo" class="primary go" type="button">Masuk</button></div></div>'+
+ '<div id="site" hidden><main><h1 id="t"></h1><div id="letter"></div><p class="sign" id="sign"></p><div class="orn" aria-hidden="true">\u2665</div><section class="rs" id="reasons"><h2 id="rt"></h2><ol id="rl"></ol></section><p class="count" id="count" hidden></p>'+
+ '<div class="heartwrap"><button id="heart" type="button" aria-label="Tekan hati untuk membaca pesan">'+HEART+'</button><p class="hint" id="hint"></p></div>'+
+ '<section class="ask" id="ask"><h2 id="q"></h2><div class="actions" id="actions"><button id="yes" type="button"></button><button id="no" type="button"></button></div></section>'+
+ '<section class="ask" id="answer" aria-live="polite"><h2 id="at"></h2><div id="ab"></div></section><p class="foot" id="foot"></p></main></div>'+
+ '<div id="overlay" role="dialog" aria-modal="true" hidden><div class="card"><p id="hm"></p><button id="close" class="primary" type="button">Tutup</button></div></div>';
+var $=function(i){return document.getElementById(i)};
+
+function T(s,c){return String(s).replace(/\{untuk\}/g,c.untuk||"Kamu").replace(/\{dari\}/g,c.dari||"Aku").replace(/\{user\}/g,c.user||"")}
+function paras(box,text,c){
+ box.textContent="";
+ T(text,c).split(/\n\s*\n/).forEach(function(x){x=x.trim();if(!x)return;var p=document.createElement("p");p.textContent=x;box.appendChild(p)});
+}
+var tries=0,lastKey=null,firstRs=true,io=null,musicMode="",musicUrl="";
+function dayCount(s){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(s||""))return null;
+ var p=s.split("-"),a=Date.UTC(+p[0],+p[1]-1,+p[2]),d=new Date(),b=Date.UTC(d.getFullYear(),d.getMonth(),d.getDate());
+ var n=Math.round((b-a)/864e5);return n<0?null:n;
+}
+function observe(){
+ var lis=document.querySelectorAll(".rs li");
+ if(!("IntersectionObserver" in window)){lis.forEach(function(l){l.classList.add("on")});return}
+ if(!io)io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target)}})},{threshold:.4});
+ lis.forEach(function(l,i){l.style.transitionDelay=(i*.12)+"s";io.observe(l)});
+}
+function apply(c){
+ document.documentElement.setAttribute("data-accent",c.warna||"mauve");
+ $("t").textContent=T(c.judul,c);
+ paras($("letter"),c.surat,c);
+ $("sign").textContent="\u2014 "+(c.dari||"Aku");
+ $("hint").textContent=c.hint;
+ $("hm").textContent=T(c.pesanHati,c);
+ $("q").textContent=T(c.tanya,c);
+ $("yes").textContent=c.ya;
+ $("no").textContent=tries>=4?"Pikir-pikir dulu":c.tidak;
+ $("at").textContent=T(c.jawabJudul,c);
+ paras($("ab"),c.jawab,c);
+ $("hint").hidden=!c.hint;
+ $("wt").textContent=T(c.welcomeJudul,c);
+ $("ws").textContent=T(c.welcomeSub,c);
+ var key=T(c.alasan||"",c);
+ if(key!==lastKey){
+  lastKey=key;
+  var rl=$("rl");rl.textContent="";
+  var items=key.split("\n").map(function(s){return s.trim()}).filter(Boolean);
+  items.forEach(function(s){var li=document.createElement("li");li.textContent=s;if(!firstRs)li.className="on";rl.appendChild(li)});
+  $("reasons").hidden=!items.length;
+  if(firstRs){firstRs=false;observe()}
+ }
+ $("rt").textContent=T(c.alasanJudul||"",c);
+ $("gnote").textContent=T(c.loginCatatan||"",c);$("gnote").hidden=!c.loginCatatan;
+ $("ghb").textContent=T(c.petunjuk||"",c);$("ghint").hidden=!c.petunjuk;
+ $("foot").textContent=T(c.penutup||"",c);$("foot").hidden=!c.penutup;
+ 
+ 
+ var mu=String(c.musikUrl||"").trim(),okUrl=/^https:\/\//i.test(mu);
+ 
+ 
+ var au=$("aud"),mf=String(c.musikFile||"").trim(),fileOk=/^[\w][\w .\-\/]*\.(mp3|m4a|mp4|webm|ogg|wav)$/i.test(mf)&&mf.indexOf("..")<0,assetOk=!!window.claude&&/^[0-9a-f]{32}$/.test(c.musikAsset||""),has=fileOk||assetOk;
+ if(has){var src=fileOk?encodeURI(mf):"/_blob/"+c.musikAsset;if(au.getAttribute("src")!==src)au.src=src}else if(au.getAttribute("src")){au.pause();au.removeAttribute("src")}
+ musicMode=has?"audio":(okUrl?"link":"");musicUrl=mu;$("mbtn").hidden=!musicMode;
+ 
+ var n=dayCount(c.tanggal),ct=$("count");
+ ct.hidden=n===null;
+ if(n!==null){ct.textContent="Sudah ";var b=document.createElement("b");b.textContent=n;ct.appendChild(b);ct.appendChild(document.createTextNode(" hari "+T(c.tanggalLabel||"",c)))}
+}
+apply(cfg);
+
+/* hati besar */
+function burst(el){
+ var r=(el||$("heart")).getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+ for(var i=0;i<14;i++){
+  var s=document.createElement("span");s.className="fl";s.textContent="\u2665";
+  s.style.left=(cx+(Math.random()*2-1)*r.width/3)+"px";
+  s.style.top=(cy+(Math.random()*2-1)*r.height/4)+"px";
+  s.style.fontSize=(14+Math.random()*16)+"px";
+  s.style.animationDelay=(Math.random()*.5)+"s";
+  s.style.setProperty("--dx",((Math.random()*2-1)*70)+"px");
+  s.addEventListener("animationend",function(){this.remove()});
+  document.body.appendChild(s);
+ }
+}
+var lastFocus=null;
+function openMsg(){lastFocus=document.activeElement;burst();$("overlay").hidden=false;$("close").focus()}
+function closeMsg(){$("overlay").hidden=true;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+$("heart").addEventListener("click",openMsg);
+$("close").addEventListener("click",closeMsg);
+$("overlay").addEventListener("click",function(e){if(e.target===this)closeMsg()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("overlay").hidden)closeMsg()});
+
+/* tombol jawaban */
+var no=$("no");
+function dodge(){
+ tries++;
+ var w=$("actions").clientWidth-no.offsetWidth-no.offsetLeft;
+ no.style.transform="translate("+((Math.random()*2-1)*Math.max(20,Math.min(90,w)))+"px,"+((Math.random()*2-1)*28)+"px)";
+ if(tries>=4)no.textContent="Pikir-pikir dulu";
+}
+no.addEventListener("mouseenter",dodge);
+no.addEventListener("touchstart",function(e){e.preventDefault();dodge()},{passive:false});
+no.addEventListener("click",dodge);
+$("yes").addEventListener("click",function(){burst($("yes"));
+ $("ask").style.display="none";
+ var a=$("answer");a.classList.add("show");a.scrollIntoView({behavior:"smooth",block:"center"});
+});
+
+/* dokumen lengkap untuk disimpan (dibangun dari sumber halaman, bukan dari DOM) */
+function dl(txt){var b=new Blob([txt],{type:"text/html"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="index.html";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)}
+function buildDoc(c){
+ var css=$("css").textContent,code=$("code").textContent;
+ var json=JSON.stringify(c).replace(/</g,"\\u003c");
+ var cl="<"+"/script>";
+ return '<!DOCTYPE html>\n<html lang="id">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>Ada yang ingin kusampaikan</title>\n<style id="css">'+css+'</style>\n</head>\n<body>\n<div id="app"></div>\n<script id="cfg" type="application/json">'+json+cl+'\n<script id="code">'+code+cl+'\n</body>\n</html>';
+}
+
+/* pemutar musik */
+var aud=$("aud"),mp=$("mbtn");
+function setPlayLabel(){var on=!aud.paused&&musicMode==="audio";mp.classList.toggle("on",on);mp.setAttribute("aria-label",on?"Jeda lagu":"Putar lagu");mp.setAttribute("aria-pressed",on?"true":"false")}
+setPlayLabel();
+mp.addEventListener("click",function(){
+ if(musicMode==="link"){window.open(musicUrl,"_blank","noopener");return}
+ if(aud.paused){var pr=aud.play();if(pr&&pr.catch)pr.catch(function(){mp.setAttribute("aria-label","Lagu tidak bisa diputar")})}else aud.pause();
+});
+aud.addEventListener("play",setPlayLabel);aud.addEventListener("pause",setPlayLabel);
+
+aud.addEventListener("error",function(){if(aud.getAttribute("src"))mp.setAttribute("aria-label","Lagu gagal dimuat")});
+
+/* login: username, password, continue, lalu selamat datang */
+function sha(s){
+ if(!(window.crypto&&crypto.subtle&&window.TextEncoder))return Promise.reject(new Error("nocrypto"));
+ return crypto.subtle.digest("SHA-256",new TextEncoder().encode("lw1:"+s)).then(function(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return("0"+x.toString(16)).slice(-2)}).join("")});
+}
+var loggedIn=false;try{loggedIn=sessionStorage.getItem("lw_ok")==="1"}catch(e){}
+var gate=$("gate"),site=$("site"),wel=$("welcome"),step=1,tmr=null,wrong=0;
+function show(w){gate.hidden=w!=="gate";wel.hidden=w!=="welcome";site.hidden=w!=="site";window.scrollTo(0,0)}
+function toSite(){clearTimeout(tmr);show("site")}
+function toWelcome(){
+ show("welcome");
+ var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+ tmr=setTimeout(toSite,rm?4500:3000);
+ $("wgo").focus();
+}
+function setStep(n,quiet){
+ step=n;$("s1").hidden=n!==1;$("s2").hidden=n!==2;$("gerr").textContent="";
+ $("gs").textContent=n===1?"Masukkan username untuk melanjutkan.":"Halo, "+$("gu").value.trim()+". Sekarang masukkan password.";
+ $("d2").className=n===2?"on":"";$("ghb").hidden=true;$("gcaps").hidden=true;
+ $("gback").textContent="\u2190 "+$("gu").value.trim();
+ if(!quiet)(n===1?$("gu"):$("gp")).focus();
+}
+function pause(b){b.disabled=true;setTimeout(function(){b.disabled=false},1200)}
+$("gform").addEventListener("submit",function(e){
+ e.preventDefault();
+ var err=$("gerr"),btn=$("gnext");
+ if(step===1){
+  var u=$("gu").value.trim().toLowerCase();
+  if(!u){err.textContent="Isi username dulu.";return}
+  if(u!==String(cfg.user).trim().toLowerCase()){err.textContent="Username tidak dikenal.";pause(btn);return}
+  setStep(2);return;
+ }
+ var pw=$("gp").value;
+ if(!pw){err.textContent="Isi password dulu.";return}
+ sha(pw).then(function(h){
+  if(h===cfg.passHash){try{sessionStorage.setItem("lw_ok","1")}catch(x){}toWelcome()}
+  else{wrong++;err.textContent=wrong>=3&&cfg.petunjuk?"Password salah. Petunjuk dibuka untukmu.":"Password salah.";if(wrong>=3&&cfg.petunjuk)$("ghb").hidden=false;$("gp").value="";pause(btn)}
+ },function(){err.textContent="Peramban ini tidak mendukung login."});
+});
+$("gback").addEventListener("click",function(){$("gp").value="";setStep(1)});
+$("ghint").addEventListener("click",function(){$("ghb").hidden=!$("ghb").hidden});
+$("gp").addEventListener("keyup",function(e){$("gcaps").hidden=!(e.getModifierState&&e.getModifierState("CapsLock"))});
+$("gshow").addEventListener("click",function(){var p=$("gp"),h=p.type==="password";p.type=h?"text":"password";this.textContent=h?"Sembunyikan":"Lihat"});
+$("wgo").addEventListener("click",toSite);
+var lo=document.createElement("button");
+lo.type="button";lo.className="quiet";lo.textContent="Keluar";lo.style.cssText="display:block;margin:3rem auto 0;font-size:.9rem";
+site.querySelector("main").appendChild(lo);
+lo.addEventListener("click",function(){
+ try{sessionStorage.removeItem("lw_ok")}catch(x){}
+ $("aud").pause();
+ $("gu").value="";$("gp").value="";setStep(1,true);show("gate");
+});
+setStep(1,true);
+show(loggedIn?"site":"gate");
+
+/* panel admin: hanya muncul untuk pemilik atau editor */
+var FIELDS=[
+ ["row",[["untuk","Untuk (nama dia)","input"],["dari","Dari (namamu)","input"]]],
+ ["judul","Judul (bisa pakai {untuk} dan {dari})","input"],
+ ["surat","Isi surat (pisahkan paragraf dengan baris kosong)","textarea"],
+ ["hint","Petunjuk di bawah hati","input"],
+ ["pesanHati","Pesan yang muncul saat hati ditekan","textarea"],
+ ["tanya","Pertanyaan","input"],
+ ["row",[["ya","Tombol setuju","input"],["tidak","Tombol ragu","input"]]],
+ ["jawabJudul","Judul setelah menjawab ya","input"],
+ ["jawab","Pesan setelah menjawab ya","textarea"],
+ ["warna","Warna","select"],
+ ["user","Username login","input"],
+ ["passBaru","Password baru (kosongkan jika tidak diubah)","input"],
+ ["adminBaru","Kode admin baru (kosongkan jika tidak diubah)","input"],
+ ["welcomeJudul","Judul selamat datang","input"],
+ ["welcomeSub","Teks di bawah selamat datang","input"],
+ ["petunjuk","Petunjuk password (di halaman password)","input"],
+ ["loginCatatan","Catatan kecil di halaman login","input"],
+ ["alasanJudul","Judul daftar alasan","input"],
+ ["alasan","Alasan (satu per baris)","textarea"],
+ ["tanggal","Tanggal spesial (opsional, untuk penghitung hari)","input","date"],
+ ["tanggalLabel","Lanjutan kalimat penghitung hari","input"],
+ ["penutup","Kalimat penutup di bawah halaman","input"],
+ 
+ 
+ ["musikUrl","Tautan lagu cadangan, dibuka di tab baru jika belum ada file (https://)","input"],
+ ["musikFile","Nama file lagu di repo GitHub (mis. lagu.mp3), khusus hosting GitHub","input"],
+ 
+];
+var COLORS=[["mauve","Mauve debu"],["sage","Hijau sage"],["biru","Biru kelabu"],["pasir","Pasir"]];
+function mkField(f,draft,host){
+ var l=document.createElement("label");l.appendChild(document.createTextNode(f[1]));
+ var el;
+ if(f[2]==="select"){el=document.createElement("select");COLORS.forEach(function(o){var op=document.createElement("option");op.value=o[0];op.textContent=o[1];el.appendChild(op)})}
+ else{el=document.createElement(f[2]);if(f[3])el.type=f[3]}
+ el.value=draft[f[0]];
+ el.addEventListener("input",function(){draft[f[0]]=el.value;apply(draft)});
+ l.appendChild(el);host.appendChild(l);
+}
+var GEAR='<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+function adminOk(){try{return sessionStorage.getItem("lw_admin")==="1"}catch(e){return false}}
+var admBox=null,admDone=null;
+function closeAdm(){if(admBox)admBox.hidden=true;var g=$("gear");if(g)g.focus()}
+function askAdmin(done){
+ admDone=done;
+ if(!admBox){
+  admBox=document.createElement("div");admBox.id="adm";admBox.hidden=true;
+  admBox.innerHTML='<form class="card" novalidate><h3>Pengaturan</h3><p class="sub">Khusus admin. Masukkan kode admin untuk membuka.</p><input id="adc" type="password" autocomplete="off" aria-label="Kode admin"><p class="err" id="ade" role="alert"></p><div class="btns"><button class="primary" type="submit">Buka</button><button class="quiet" type="button" id="adx">Batal</button></div></form>';
+  document.body.appendChild(admBox);
+  var inp=$("adc"),er=$("ade");
+  $("adx").addEventListener("click",closeAdm);
+  admBox.addEventListener("click",function(e){if(e.target===admBox)closeAdm()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!admBox.hidden)closeAdm()});
+  admBox.querySelector("form").addEventListener("submit",function(e){
+   e.preventDefault();
+   if(!inp.value){er.textContent="Isi kode admin dulu.";return}
+   sha(inp.value).then(function(h){
+    if(h===cfg.adminHash){
+     try{sessionStorage.setItem("lw_admin","1")}catch(x){}
+     inp.value="";er.textContent="";admBox.hidden=true;if(admDone)admDone();
+    }else{er.textContent="Kode admin salah.";inp.value="";inp.focus()}
+   },function(){er.textContent="Peramban ini tidak mendukung verifikasi."});
+  });
+ }
+ $("ade").textContent="";
+ admBox.hidden=false;$("adc").focus();
+}
+function enableAdmin(){
+ var draft=Object.assign({passBaru:"",adminBaru:""},cfg);
+ var btn=document.createElement("button");
+ btn.type="button";btn.id="gear";btn.setAttribute("aria-label","Pengaturan admin");btn.innerHTML=GEAR;document.body.appendChild(btn);
+ var p=document.createElement("aside");p.id="panel";p.hidden=true;
+ var inn=document.createElement("div");inn.className="in";
+ inn.innerHTML='<h3>Panel admin</h3><p class="note">Perubahan tampil langsung di sini. Tekan Simpan agar berlaku untuk semua orang. Menyimpan hanya berhasil dari akun Claude pemilik halaman.</p>';
+ if(!window.claude){var nt=inn.querySelector(".note");if(nt)nt.textContent="Perubahan tampil langsung di sini. Tekan Simpan untuk mengunduh index.html baru, lalu unggah ke repo GitHub untuk menggantikan yang lama."}
+ FIELDS.forEach(function(f){
+  if(f[0]==="row"){var r=document.createElement("div");r.className="row";f[1].forEach(function(x){mkField(x,draft,r)});inn.appendChild(r)}
+  else mkField(f,draft,inn);
+ });
+ var up=document.createElement("label");up.appendChild(document.createTextNode("Unggah lagu agar diputar di halaman (mp4 atau webm, maks 20 MB)"));
+ var fi=document.createElement("input");fi.type="file";fi.accept=".mp4,.m4a,.webm,video/mp4,video/webm,audio/mp4";
+ var us=document.createElement("span");us.style.cssText="display:block;margin-top:.3rem";
+ us.textContent=/^[0-9a-f]{32}$/.test(draft.musikAsset||"")?"Lagu sudah terunggah.":"Belum ada lagu terunggah.";
+ up.appendChild(fi);up.appendChild(us);inn.appendChild(up);
+ if(!window.claude)up.style.display="none";
+ fi.addEventListener("change",async function(){
+  var f=fi.files&&fi.files[0];if(!f)return;
+  var ext=(f.name.split(".").pop()||"").toLowerCase();
+  var type=ext==="webm"?"video/webm":(ext==="mp4"||ext==="m4a")?"video/mp4":"";
+  if(!type){us.textContent="Format belum didukung. Pakai mp4 atau webm.";return}
+  us.textContent="Mengunggah\u2026";
+  try{
+   var as=await claude.use("assets");
+   if(!as){us.textContent="Unggah hanya bisa dari akun pemilik atau editor.";return}
+   var r=await as.upload(f,{type:type});
+   draft.musikAsset=r.id;apply(draft);us.textContent="Terunggah. Tekan Simpan agar berlaku untuk semua orang.";
+  }catch(e){
+   var cd=e&&e.code;
+   us.textContent=cd==="too_large"?"File terlalu besar (maks 20 MB).":cd==="unsupported_type"?"Format file ditolak. Coba ekspor ulang sebagai mp4 atau webm.":"Gagal mengunggah, coba lagi.";
+  }
+ });
+ var bt=document.createElement("div");bt.className="btns";
+ var save=document.createElement("button");save.type="button";save.className="primary";save.textContent="Simpan";
+ var reset=document.createElement("button");reset.type="button";reset.className="quiet";reset.textContent="Tutup";
+ var st=document.createElement("span");st.id="status";st.setAttribute("aria-live","polite");
+ bt.appendChild(save);bt.appendChild(reset);bt.appendChild(st);inn.appendChild(bt);p.appendChild(inn);document.body.appendChild(p);
+ btn.addEventListener("click",function(){if(adminOk())p.hidden=false;else askAdmin(function(){p.hidden=false})});
+ reset.addEventListener("click",function(){p.hidden=true});
+ save.addEventListener("click",async function(){
+  save.disabled=true;st.textContent="Menyimpan\u2026";
+  try{
+   var art=window.claude?await claude.use("artifact"):null;
+   
+   var out=Object.assign({},draft),np=String(draft.passBaru||"").trim();
+   delete out.passBaru;delete out.adminBaru;
+   var na=String(draft.adminBaru||"").trim();
+   if(na)out.adminHash=await sha(na);
+   if(np)out.passHash=await sha(np);
+   if(art){await art.publish(buildDoc(out));st.textContent="Tersimpan."}else{dl(buildDoc(out));st.textContent="index.html baru terunduh. Unggah ke repo GitHub untuk menimpa yang lama.";save.disabled=false;return}
+   st.textContent="Tersimpan.";
+  }catch(e){
+   var c=e&&e.code;
+   st.textContent=c==="not_writer"||c==="not_granted"?"Akunmu tidak punya izin untuk menyimpan.":c==="conflict"?"Halaman baru saja diubah, memuat versi terbaru.":"Gagal menyimpan, coba lagi sebentar.";
+   save.disabled=false;
+  }
+ });
+}
+(async function(){
+ try{
+  
+  
+  enableAdmin();
+ }catch(e){}
+})();
+})();
+</script>
+</body>
+</html>
